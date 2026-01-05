@@ -7,6 +7,9 @@ tags: meta/library
 
 This library customizes the editor cursor appearance to improve visibility and focus. It replaces the default thin cursor with a slightly thicker, rounded blue caret, subtly taller than the text line and enhanced with a soft glow. The result is a more modern cursor that is easier to track during fast editing without being visually distracting.
 
+**Credit**
+Originally shared by avi-cenna on the SilverBullet forum: https://community.silverbullet.md/t/how-to-add-custom-styling-to-the-cursor/3017
+
 ```space-style
 .cm-cursor {
   border-left: 3px solid #007AFF !important;
