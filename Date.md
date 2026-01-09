@@ -1,9 +1,9 @@
 ---
-name: Library/Silver/Date
+name: Library/lochel/Date
 tags: meta/library
 ---
 
-## Date
+# Date
 
 This library extends  the [[^Library/Std/APIs/Date]] functionality with additional helpers for parsing, formatting, and comparing dates and timestamps.
 
@@ -16,7 +16,7 @@ ${date.to_timestamp("2025-12-07 14:30")}        -- should return a UNIX timestam
 ${date.diff_days("2025-12-07 14:30", "2025-12-09 14:30")}                 -- should return 2
 
 
-## Implementation
+# Implementation
 
 ```space-lua
 -- priority: 9
@@ -111,4 +111,6 @@ end
 function date.now()
   return os.date(date.datetime_format)
 end
+
+function niceDate(ts) return date.niceDate(ts) end
 ```
