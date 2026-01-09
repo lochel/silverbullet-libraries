@@ -1,13 +1,16 @@
 ---
-name: Library/Silver/Conflicts
+name: Library/lochel/Conflicts
 tags: meta/library
 ---
 
-## Conflicts
+# Conflicts
 
 This is a SilverBullet widget that detects conflicted page versions, surfaces them at the top of the current page, and provides one-click options to diff, review, and to safely merge or discard changes.
 
+# Implementation
+
 ## Widget
+
 ```space-lua
 widgets = widgets or {}
 
@@ -58,6 +61,7 @@ event.listen {
 
 
 ## Diff Page
+
 ```space-lua
 event.listen {
   name = "editor:pageCreating",
