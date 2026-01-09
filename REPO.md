@@ -16,4 +16,7 @@ description: Enhances the editor cursor for better visibility and focus.
 name: Date
 uri: https://github.com/lochel/silverbullet-libraries/blob/main/Date.md
 description: Extends the Std/Date functionality with additional helpers for parsing, formatting, and comparing dates and timestamps.
+---
+name: Path
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Path.md
 ```
