@@ -26,4 +26,7 @@ description: Trims trailing whitespaces on save
 ---
 name: Sub-tags
 uri: https://github.com/lochel/silverbullet-libraries/blob/main/Sub-tags.md
+---
+name: Journal Calendar
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Journal Calendar.md
 ```
