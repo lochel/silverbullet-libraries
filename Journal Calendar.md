@@ -4,14 +4,13 @@ tags: meta/library
 ---
 
 ## Example
-${widget.html(journal.calendar("Journal/", date.today(), true))}
+${journal.calendar("Journal/", date.today(), true)}
 
 ## Implementation
 
 ```space-style
 .calendar {
-  --side-padding: 0px;
-  --border-radius: 8px;
+  --border-radius: 20px;
   --cell-size: 40px;
 
   /* Light Mode Variables */
@@ -104,9 +103,9 @@ ${widget.html(journal.calendar("Journal/", date.today(), true))}
 .calendar__date::before {
   content: "";
   position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
+  width: 90%;
+  height: 90%;
+  border-radius: var(--border-radius);
   z-index: 0;
   transition: background 0.2s ease;
 }
@@ -118,7 +117,6 @@ ${widget.html(journal.calendar("Journal/", date.today(), true))}
 
 /* Hover effect */
 .calendar__date:hover:not(.calendar__date--grey):not(.calendar__week)::before {
-  background: var(--hover-bg);
   width: 80%;
   height: 80%;
   top: 50%;
@@ -136,30 +134,34 @@ ${widget.html(journal.calendar("Journal/", date.today(), true))}
   background: none;
   border: 2px solid var(--selected-border);
 }
-
-.calendar__date--selected span {
-  color: var(--selected-border);
-}
+.calendar__date--selected span { color: var(--selected-border); }
 
 /* Today */
-.calendar__date--today span {
-  color: var(--today-color);
-}
+.calendar__date--today span { color: var(--today-color); }
 
-/* Today + Selected */
-.calendar__date--today-selected::before {
+/* Today + Selected (composed classes) */
+.calendar__date--today.calendar__date--selected::before {
   background: none;
   border: 2px solid var(--selected-border);
 }
+.calendar__date--today.calendar__date--selected span { color: var(--today-color); }
 
+/* Today + Selected + Has Content (composed classes) */
+.calendar__date--today.calendar__date--selected.calendar__date--has-content::before {
+  background: var(--content-bg);
+  border: 2px solid var(--selected-border);
+}
+.calendar__date--today.calendar__date--selected.calendar__date--has-content span { color: var(--today-color); }
+
+/* Week number (inert) */
 .calendar__date--today-selected span {
   color: var(--today-color);
 }
 
 /* Has content + selected */
 .calendar__date--has-content.calendar__date--selected::before {
-  background: #1752ff;
-  border: none;
+  background: var(--content-bg);
+  border: 2px solid var(--selected-border);
 }
 
 .calendar__date--has-content.calendar__date--selected span {
@@ -168,7 +170,7 @@ ${widget.html(journal.calendar("Journal/", date.today(), true))}
 
 /* Today + Selected + Has Content */
 .calendar__date--today-selected.calendar__date--has-content::before {
-  background: none;
+  background: var(--content-bg);
   border: 2px solid var(--selected-border);
 }
 
@@ -292,22 +294,11 @@ function journal.calendar(root, today, nav)
 
         local isToday = (dateStr == todayStr)
         local isSelected = (dateStr == today)
-local hasContent = space.fileExists(root .. dateStr .. ".md")
+        local hasContent = space.fileExists(root .. dateStr .. ".md")
 
-if isToday and isSelected and hasContent then
-  class = class .. " calendar__date--today-selected-has-content"
-elseif isToday and isSelected then
-  class = class .. " calendar__date--today-selected"
-elseif isToday then
-  class = class .. " calendar__date--today"
-elseif isSelected then
-  class = class .. " calendar__date--selected"
-end
-
-if hasContent then
-  class = class .. " calendar__date--has-content"
-end
-
+        if isToday then class = class .. " calendar__date--today" end
+        if isSelected then class = class .. " calendar__date--selected" end
+        if hasContent then class = class .. " calendar__date--has-content" end
 
         day = day + 1
       end
@@ -321,7 +312,7 @@ end
   if nav then html = html .. opts end
   html = html .. "<div class='calendar__body'>" .. daysHtml .. dateHtml .. "</div></div>"
 
-  return html
+  return widget.html(html)
 end
 
 function journal.summary(root, days)
@@ -330,7 +321,7 @@ function journal.summary(root, days)
     text = text:gsub("%s+$", "\n")
     return text
   end
-  
+
   local year, month, day = date.fromString(date.today())
   local text = ""
 
@@ -360,14 +351,12 @@ function widgets.journalCalendar(options)
 
   local pageName = editor.getCurrentPage()
   local root, ymd = pageName:match("^(.*/)(%d+%-%d+%-%d+)$")
-  
+
   if root == nil then
     return
   end
 
-  return widget.new {
-    html = journal.calendar(root, ymd, true)
-  }
+  return journal.calendar(root, ymd, true)
 end
 
 event.listen {
@@ -377,7 +366,6 @@ event.listen {
   end
 }
 ```
-
 
 ## Templates
 ```space-lua
@@ -392,25 +380,6 @@ event.listen {
     return {
       text = journal.template,
       perm = "rw"
-    }
-  end
-}
-```
-
-```space-lua
-event.listen {
-  name = "editor:pageCreating",
-  run = function(e)
-    local root = e.data.name:match("^(.*/)-Journal$")
-    if root == nil then
-      return
-    end
-
-    local text = "## Journal Pages\n${query[[from index.tag \"page\" where name:startsWith(\"" .. e.data.name .. "/\") order by name desc select \"[[\" .. name .. \"]]\"]]}\n"
-
-    return {
-      text = text,
-      perm = "ro"
     }
   end
 }
