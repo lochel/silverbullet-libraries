@@ -325,6 +325,12 @@ end
 end
 
 function journal.summary(root, days)
+  function _trimTrailingWhitespaces(pageName)
+    text = space.readPage(pageName)
+    text = text:gsub("%s+$", "\n")
+    return text
+  end
+  
   local year, month, day = date.fromString(date.today())
   local text = ""
 
@@ -333,8 +339,12 @@ function journal.summary(root, days)
     local dateStr = os.date("%Y-%m-%d", ts)
     if space.fileExists(root .. dateStr .. ".md") then
       text = text .. "## [[" .. root .. dateStr .. "|" .. os.date("%A, %d/%m", ts) .. "]]\n"
-      text = text .. "![[" .. root .. dateStr .. "|" .. dateStr .. "]]\n"
+      text = text .. _trimTrailingWhitespaces(root .. dateStr)
     end
+  end
+
+  if text == "" then
+    return "*(no summary available)*"
   end
 
   return text
