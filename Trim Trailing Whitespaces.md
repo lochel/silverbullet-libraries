@@ -14,8 +14,8 @@ event.listen{
   name = "editor:pageSaving",
   run = function(e)
     data = editor.getText()
-    if data:match("%s+$") then
-      data = data:gsub("%s+$", "")
+    if data:match("\n%s+$") then
+      data = data:gsub("%s+$", "\n")
       space.writePage(e.data, data)
     end
   end
