@@ -126,8 +126,8 @@ end
 function journal.summary(root, days)
   function _trimTrailingWhitespaces(pageName)
     text = space.readPage(pageName)
-    text = text:gsub("%s+$", "\n")
-    return text
+    text = text:gsub("%s+$", "")
+    return text .. "\n"
   end
 
   local year, month, day = date.fromString(date.today())
