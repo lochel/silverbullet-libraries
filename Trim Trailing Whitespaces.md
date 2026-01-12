@@ -13,10 +13,11 @@ This library ensures your pages stay clean by removing any trailing whitespaces 
 event.listen{
   name = "editor:pageSaving",
   run = function(e)
-    data = editor.getText()
-    if data:match("\n%s+$") then
-      data = data:gsub("%s+$", "\n")
-      space.writePage(e.data, data)
+    local data = editor.getText()
+    local trimmed = data:gsub("%s+$", "") .. "\n"
+    
+    if trimmed ~= data then
+      space.writePage(e.data, trimmed)
     end
   end
 }
