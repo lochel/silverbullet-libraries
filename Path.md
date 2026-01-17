@@ -38,5 +38,10 @@ function path.add_to_path(path, part)
     -- Concatenate with a single slash
     return path .. "/" .. part
 end
+
+function path.getParent(pageName)
+  local _path = pageName or editor.getCurrentPage()
+  return path.pop_path(_path)
+end
 ```
 
