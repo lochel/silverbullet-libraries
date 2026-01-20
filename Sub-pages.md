@@ -15,6 +15,7 @@ widgets = widgets or {}
 function widgets.subPages(pageName)
   local parent = path.getParent(pageName or editor.getCurrentPage())
   local prefix = (pageName or editor.getCurrentPage()) .. "/"
+  local len = #prefix
   local pages = query[[
     from index.tag "page"
     where name:startsWith(prefix)
@@ -31,11 +32,15 @@ function widgets.subPages(pageName)
   for _, page in ipairs(pages) do
     if path.pop_path(page.name) ~= last_path then
       last_path = path.pop_path(page.name)
-      md = md .. "# Sub-pages " .. last_path .. "\n"
+      if last_path:sub(len+1) == "" then
+        md = md .. "# Sub-pages\n"
+      else
+        md = md .. "# Sub-pages \"" .. last_path:sub(len+1) .. "\"\n"
+      end
     end
     md = md .. "* [[" .. page.name .. "]]\n"
   end
-  
+
   return widget.new {
     markdown = md
   }
