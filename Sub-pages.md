@@ -13,6 +13,7 @@ ${widgets.subPages(path.getParent())}
 widgets = widgets or {}
 
 function widgets.subPages(pageName)
+  local parent = path.getParent(pageName or editor.getCurrentPage())
   local prefix = (pageName or editor.getCurrentPage()) .. "/"
   local pages = query[[
     from index.tag "page"
@@ -21,6 +22,11 @@ function widgets.subPages(pageName)
   ]]
   
   local md = ""
+
+  if space.pageExists(parent) then
+    md = "# Parent\n* [[" .. parent .. "]]\n"
+  end
+  
   local last_path = ""
   for _, page in ipairs(pages) do
     if path.pop_path(page.name) ~= last_path then
