@@ -12,8 +12,10 @@ Originally shared by avi-cenna on the SilverBullet forum: https://community.silv
 
 # Implementation
 
+## Caret
+
 ```space-style
-.cm-cursor {
+.cm-cursor, .cm-dropCursor {
   border-left: 3px solid #007AFF !important;
   border-right: none !important;
   margin-left: -1px !important;
@@ -28,5 +30,114 @@ Originally shared by avi-cenna on the SilverBullet forum: https://community.silv
   
   /* Optional: Add a subtle glow effect */
   box-shadow: 0 0 3px rgba(0, 122, 255, 0.4) !important;
+}
+
+.sb-modal-box .cm-content .cm-line {
+  caret-color: #007AFF;
+}
+```
+
+## Active Line
+
+```space-lua
+function setupActiveLineHighlighter()
+    local scriptEl = js.window.document.createElement("script")
+    scriptEl.innerHTML = [[
+    (function() {
+        const CLASS_NAME = "sb-active-line";
+        
+        function updateActiveLine() {
+            // 1. Find the primary cursor
+            const cursor = document.querySelector(".cm-cursor-primary");
+            if (!cursor) return;
+
+            // 2. Get the cursor position
+            const rect = cursor.getBoundingClientRect();
+            // We shift slightly to the right to ensure we hit the line text area
+            const x = rect.left + (rect.width / 2);
+            const y = rect.top + (rect.height / 2);
+
+            // 3. Find the element at that coordinate
+            const elementAtCursor = document.elementFromPoint(x, y);
+            const currentLine = elementAtCursor ? elementAtCursor.closest(".cm-line") : null;
+
+            // 4. Clean up old highlights
+            document.querySelectorAll("." + CLASS_NAME).forEach(el => {
+                if (el !== currentLine) el.classList.remove(CLASS_NAME);
+            });
+
+            // 5. Apply new highlight
+            if (currentLine && !currentLine.classList.contains(CLASS_NAME)) {
+                currentLine.classList.add(CLASS_NAME);
+            }
+        }
+
+        // Observer to watch for cursor movements (changes in style or DOM position)
+        const observer = new MutationObserver((mutations) => {
+            updateActiveLine();
+        });
+
+        // We need to wait for the editor to be available in the DOM
+        const init = () => {
+            const scroller = document.querySelector(".cm-scroller");
+            if (scroller) {
+                // Monitor the cursor layer for changes (blinking/moving)
+                const cursorLayer = document.querySelector(".cm-cursorLayer");
+                if (cursorLayer) {
+                    observer.observe(cursorLayer, { attributes: true, subtree: true });
+                }
+                // Also update on scrolls and clicks
+                scroller.addEventListener("scroll", updateActiveLine, { passive: true });
+                window.addEventListener("click", () => setTimeout(updateActiveLine, 10));
+                updateActiveLine();
+            } else {
+                setTimeout(init, 500);
+            }
+        };
+
+        init();
+    })();
+    ]]
+    js.window.document.body.appendChild(scriptEl)
+end
+
+-- Initialize the hack on page load
+event.listen { 
+    name = "editor:pageLoaded", 
+    run = function() 
+        setupActiveLineHighlighter() 
+    end 
+}
+```
+
+```space-style
+.cm-line {
+  transition: background-color 0.15s ease-out;
+}
+
+.sb-active-line {
+  background-color: rgba(0, 122, 255, 0.2) !important;
+}
+```
+
+## Task Attributes
+
+```space-style
+.sb-attribute[data-completed] {  
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.sb-active-line .sb-attribute[data-completed] {
+  opacity: 1;
+}
+
+.sb-attribute[data-deadline] {  
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.sb-active-line .sb-attribute[data-deadline] {
+  opacity: 1;
 }
 ```
