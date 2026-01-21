@@ -14,8 +14,9 @@ It includes:
 
 ## Usage
 
-${record_consumed_bags()}
-${print_pellets_lager()}
+${pellets.record_consumed_bags()}
+
+${query[[from pellets.pellets_lager() order by date desc limit 5]]}
 
 # Implementation
 
@@ -24,7 +25,17 @@ ${print_pellets_lager()}
 pellets = pellets or {}
 pellets.path = "Data/Pellets Data"
 
-function record_consumed_bags()
+function pellets.last_comment()
+  local q = query[[
+    from index.tag "meta/data/pellets"
+    order by date desc
+    limit 1
+    select comment
+  ]]
+  return q[1]
+end
+
+function pellets.record_consumed_bags()
   return widget.new {
     html = "<button>Record Consumed Pellets</button>",
     events = {
@@ -32,7 +43,8 @@ function record_consumed_bags()
         local _bags = editor.prompt("Enter number of consumed pellets bags", "")
         if not _bags then return end
 
-        local comment = editor.prompt("Enter comment (optional)", "") or ""
+        local last_comment = pellets.last_comment()
+        local comment = editor.prompt("Enter comment (optional)", last_comment) or ""
         local _date = date.now()
         
         local record = "\n```#meta/data/pellets\n"
@@ -50,26 +62,23 @@ function record_consumed_bags()
   }
 end
 
-function print_pellets_lager()
+function pellets.pellets_lager()
   local q = query[[
     from index.tag "meta/data/pellets"
     order by date
   ]]
 
-  local md = "| date | storage | consumed/day | comment |\n"
-           .. "|---|:---:|:---:|---|\n"
+  local rows = {}
 
   local running_storage = nil
   local prev_consumed_date = nil
-  local prev_consumed_value = nil
 
   for i = 1, #q do
     local e = q[i]
 
     local comment = e.comment or ""
     local consumed = 0
-    local consumed_per_day = ""
-    local storage_display = ""
+    local consumed_per_day = nil
 
     -- determine delta
     local delta = 0
@@ -83,13 +92,9 @@ function print_pellets_lager()
     -- update running storage
     if e.storage then
       running_storage = e.storage
-      storage_display = tostring(e.storage)
     else
       if running_storage then
         running_storage = running_storage + delta
-        storage_display = "(" .. tostring(running_storage) .. ")"
-      else
-        storage_display = ""
       end
     end
 
@@ -97,26 +102,29 @@ function print_pellets_lager()
     if consumed > 0 and prev_consumed_date then
       local days = date.diff_days(prev_consumed_date, e.date)
       if days > 0 then
-        consumed_per_day = string.format("%.2f", consumed / days)
+        consumed_per_day = consumed / days
       else
-        consumed_per_day = tostring(consumed)
+        consumed_per_day = consumed
       end
     end
 
-    md = md
-      .. "| " .. e.date
-      .. " | " .. storage_display
-      .. " | " .. consumed_per_day
-      .. " | " .. comment
-      .. " |\n"
+    -- store structured row
+    table.insert(rows, {
+      date = e.date,
+      validated = validated,
+      storage = e.storage,
+      running_storage = running_storage,
+      consumed_per_day = consumed_per_day,
+      comment = comment,
+      added = e.added,
+      consumed = e.consumed,
+    })
 
-    -- update previous consumed trackers if this entry has consumed
     if consumed > 0 then
       prev_consumed_date = e.date
-      prev_consumed_value = consumed
     end
   end
 
-  return md
+  return rows
 end
 ```
