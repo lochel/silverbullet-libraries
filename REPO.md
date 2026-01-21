@@ -29,4 +29,7 @@ uri: https://github.com/lochel/silverbullet-libraries/blob/main/Sub-tags.md
 ---
 name: Journal Calendar
 uri: https://github.com/lochel/silverbullet-libraries/blob/main/Journal Calendar.md
+---
+name: Plotly
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Plotly.md
 ```
