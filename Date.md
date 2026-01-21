@@ -111,6 +111,4 @@ end
 function date.now()
   return os.date(date.datetime_format)
 end
-
-function niceDate(ts) return date.niceDate(ts) end
 ```
