@@ -122,22 +122,62 @@ event.listen {
 
 ## Task Attributes
 
+source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
+
 ```space-style
-.sb-attribute[data-completed] {  
-  opacity: 0.5;
-  transition: opacity 0.2s ease-in-out;
+.sb-attribute[data-due]::before,
+.sb-attribute[data-ask]::before,
+.sb-attribute[data-pr]::before,
+.sb-attribute[data-to]::before,
+.sb-attribute[data-deadline]::before {
+  position: relative;
+  left: 1.5em;
+  color: var(--root-color); /* readable emoji color */
+  margin-left: -1.5em;
 }
 
-.sb-active-line .sb-attribute[data-completed] {
-  opacity: 1;
+.sb-attribute :is(.sb-meta, .sb-atom) {
+  background: var(--root-background-color);
 }
 
-.sb-attribute[data-deadline] {  
-  opacity: 0.5;
-  transition: opacity 0.2s ease-in-out;
+/* Hide meta characters: [, :, ] */
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) .sb-meta {
+  color: var(--root-background-color);
+  background: var(--root-background-color);
 }
 
-.sb-active-line .sb-attribute[data-deadline] {
-  opacity: 1;
+/* Hide the literal "To" text */
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) .sb-atom {
+  color: transparent;
+  background: var(--root-background-color);
+  position: absolute;
+}
+
+/* Show emoji (🤵) instead of value ("To") */
+.sb-attribute[data-ask]::before {
+  content: "🚩";
+  opacity: 0.7;
+}
+.sb-attribute[data-to]::before {
+  content: "🤵";
+  opacity: 0.7;
+}
+.sb-attribute[data-pr]::before {
+  content: "⚡️";
+  opacity: 0.7;
+}
+.sb-attribute[data-due]::before {
+  content: "📅";
+  opacity: 0.7;
+}
+.sb-attribute[data-deadline]::before {
+  content: "📅";
+  opacity: 0.7;
+}
+
+/* Optional: slightly soften the value text */
+.sb-attribute .sb-frontmatter:not(.sb-meta):not(.sb-atom) {
+  opacity: 0.7;
+  background: var(--root-background-color);
 }
 ```
