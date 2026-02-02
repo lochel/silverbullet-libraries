@@ -180,13 +180,11 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
   opacity: 0.7;
 }
 .sb-attribute[data-deadline]::before {
-  content: "📅";
+  content: "⌛";
   display: inline;
   opacity: 0.7;
 }
 ```
-
-
 
 ```space-lua
 command.define {
@@ -233,5 +231,3 @@ body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
   background: red;
 }
 ```
-
-
