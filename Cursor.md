@@ -130,25 +130,26 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
 .sb-attribute[data-ask]::before,
 .sb-attribute[data-pr]::before,
 .sb-attribute[data-to]::before,
-.sb-attribute[data-deadline]::before {
+.sb-attribute[data-deadline]::before,
+.sb-attribute[data-done]::before {
   background: none;
   color: var(--root-color); /* readable emoji color */
 }
 
 /* hide meta characters: [ : ] */
-.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) > .sb-list.sb-frontmatter.sb-meta {
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline], [data-done]) > .sb-list.sb-frontmatter.sb-meta {
   display: none;
   background: none;
 }
 
 /* hide attribute name */
-.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) > .sb-list.sb-frontmatter.sb-atom {
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline], [data-done]) > .sb-list.sb-frontmatter.sb-atom {
   display: none;
   background: none;
 }
 
 /* attribute value */
-.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) > .sb-list.sb-frontmatter {
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline], [data-done]) > .sb-list.sb-frontmatter {
   background: none;
 }
 
@@ -181,6 +182,11 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
 }
 .sb-attribute[data-deadline]::before {
   content: "⌛";
+  display: inline;
+  opacity: 0.7;
+}
+.sb-attribute[data-done]::before {
+  content: "✅";
   display: inline;
   opacity: 0.7;
 }
