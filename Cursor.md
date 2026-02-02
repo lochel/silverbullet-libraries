@@ -243,6 +243,3 @@ body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
   background: red;
 }
 ```
-
-* [x] Task [due:2026-02-02]
-* [ ]
