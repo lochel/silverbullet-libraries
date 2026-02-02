@@ -222,21 +222,15 @@ command.define {
 body.attr-alt-display .sb-attribute {
   color: black;
   border: 1px solid orange !important ;
-  border-radius: 6px;
-  text-decoration: none !important;
-  
+  border-radius: 6px;  
 }
 body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-meta {
   display: inline !important;
-  background: green;
-  text-decoration: none !important;
-  
+  background: green; 
 }
 body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-atom {
   display: inline !important;
   background: yellow;
-  text-decoration: none !important;
-  
 }
 body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
   display: inline !important;
