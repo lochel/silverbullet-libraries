@@ -125,59 +125,113 @@ event.listen {
 source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
 
 ```space-style
+/* color */
 .sb-attribute[data-due]::before,
 .sb-attribute[data-ask]::before,
 .sb-attribute[data-pr]::before,
 .sb-attribute[data-to]::before,
 .sb-attribute[data-deadline]::before {
-  position: relative;
-  left: 1.5em;
+  background: none;
   color: var(--root-color); /* readable emoji color */
-  margin-left: -1.5em;
 }
 
-.sb-attribute :is(.sb-meta, .sb-atom) {
-  background: var(--root-background-color);
+/* hide meta characters: [ : ] */
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) > .sb-list.sb-frontmatter.sb-meta {
+  display: none;
+  background: none;
 }
 
-/* Hide meta characters: [, :, ] */
-.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) .sb-meta {
-  color: var(--root-background-color);
-  background: var(--root-background-color);
+/* hide attribute name */
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) > .sb-list.sb-frontmatter.sb-atom {
+  display: none;
+  background: none;
 }
 
-/* Hide the literal "To" text */
-.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) .sb-atom {
-  color: transparent;
-  background: var(--root-background-color);
-  position: absolute;
+/* attribute value */
+.sb-attribute:is([data-ask], [data-to], [data-pr], [data-due], [data-deadline]) > .sb-list.sb-frontmatter {
+  background: none;
 }
 
-/* Show emoji (🤵) instead of value ("To") */
+/* entire attribute */
+.sb-attribute {
+  border: 1px solid rgba(0, 122, 255, 0.7) !important ;
+  border-radius: 6px;
+}
+
+/* attribute decoration */
 .sb-attribute[data-ask]::before {
   content: "🚩";
+  display: inline;
   opacity: 0.7;
 }
 .sb-attribute[data-to]::before {
   content: "🤵";
+  display: inline;
   opacity: 0.7;
 }
 .sb-attribute[data-pr]::before {
   content: "⚡️";
+  display: inline;
   opacity: 0.7;
 }
 .sb-attribute[data-due]::before {
   content: "📅";
+  display: inline;
   opacity: 0.7;
 }
 .sb-attribute[data-deadline]::before {
   content: "📅";
+  display: inline;
   opacity: 0.7;
-}
-
-/* Optional: slightly soften the value text */
-.sb-attribute .sb-frontmatter:not(.sb-meta):not(.sb-atom) {
-  opacity: 0.7;
-  background: var(--root-background-color);
 }
 ```
+
+
+
+```space-lua
+command.define {
+  name = "toggle-attr-display",
+  key = "Ctrl-Alt-a",
+  run = function()
+    local body = js.window.document.body
+    if not body then
+      editor.flashNotification("Body inaccessible")
+      return
+    end
+
+    local classStr = body.className or ""
+    local hasAlt = classStr:find("attr%-alt%-display") ~= nil
+
+    if hasAlt then
+      body.className = classStr:gsub("%s*attr%-alt%-display", "")
+
+      editor.flashNotification("Attribute highlight: disabled")
+    else
+      body.className = classStr .. " attr-alt-display"
+      editor.flashNotification("Attribute highlight: enabled")
+    end
+  end
+}
+```
+
+```space-style
+body.attr-alt-display .sb-attribute {
+  color: black;
+  border: 1px solid orange !important ;
+  border-radius: 6px;
+}
+body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-meta {
+  display: inline !important;
+  background: green;
+}
+body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-atom {
+  display: inline !important;
+  background: yellow;
+}
+body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
+  display: inline !important;
+  background: red;
+}
+```
+
+
