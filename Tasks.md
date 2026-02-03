@@ -79,7 +79,7 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
 ```space-style
 #sb-main .cm-editor .cm-task-checked {
   text-decoration: none !important;
-  opacity: 0.4;
+  opacity: 0.3;
   filter: grayscale(1);
 
   .sb-task {
@@ -120,7 +120,7 @@ event.listen {
     
     -- set new attribute
     if e.data.newState == "x" then
-      text = text .. " [done:" .. date.now() .. "]"
+      text = text .. "[done:" .. date.now() .. "]"
     end
     
     editor.replaceRange(e.data.from, e.data.to, text)
