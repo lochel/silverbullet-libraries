@@ -173,7 +173,3 @@ body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
   background: red;
 }
 ```
-
-* [ ] Task [pr:4][due:2026-04-04][deadline:2026-04-04]
-* [x] Task [pr:4][due:2026-04-04][deadline:2026-04-04]
-* [ ] 
