@@ -236,4 +236,17 @@ body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
   display: inline !important;
   background: red;
 }
+
+#sb-main .cm-editor .cm-task-checked {
+  text-decoration: none !important;
+}
+
+#sb-main .cm-editor .cm-task-checked .sb-task {
+  text-decoration: line-through;
+}
+
+#sb-main .cm-editor .cm-task-checked .sb-attribute {
+  opacity: 0.4;
+  border: 1px solid gray !important;
+}
 ```
