@@ -5,6 +5,9 @@ tags: meta/repository
 Random collection of SilverBullet extensions.
 
 ```#meta/library/remote
+name: Admonitions
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Admonitions.md
+---
 name: Conflicts
 uri: https://github.com/lochel/silverbullet-libraries/blob/main/Conflicts.md
 description: Detect, diff, and resolve confliced page versions directly inside SilverBullet.
