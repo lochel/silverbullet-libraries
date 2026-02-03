@@ -246,12 +246,20 @@ body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
 
 
 ```space-lua
+-- priority: 1
+tasks = tasks or {}
+tasks.done = False
+
 event.listen {
   name = "task:stateChange",
   run = function(e)
     local function find_attr(s, attr)
       local a, b = string.find(s, "%[" .. attr .. "[^%]]*%]")
       return a, b
+    end
+
+    if not tasks.done then
+      return
     end
 
     local text = e.data.text
