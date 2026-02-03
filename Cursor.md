@@ -243,3 +243,35 @@ body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
   background: red;
 }
 ```
+
+
+```space-lua
+event.listen {
+  name = "task:stateChange",
+  run = function(e)
+    local function find_attr(s, attr)
+      local a, b = string.find(s, "%[" .. attr .. "[^%]]*%]")
+      return a, b
+    end
+
+    local text = e.data.text
+
+    -- remove old attribute
+    local attr_start, attr_end = find_attr(text, "done")
+    if attr_start ~= nil then
+      text = text:sub(1, attr_start - 1) .. text:sub(attr_end + 1)
+      text = text:trimEnd()
+    end
+
+    -- set new state
+    text = text:gsub("^%[[^%]]*%]", "[" .. e.data.newState .. "]")
+    
+    -- set new attribute
+    if e.data.newState == "x" then
+      text = text .. " [done:" .. date.now() .. "]"
+    end
+    
+    editor.replaceRange(e.data.from, e.data.to, text)
+  end
+}
+```
