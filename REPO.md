@@ -17,19 +17,22 @@ name: Date
 uri: https://github.com/lochel/silverbullet-libraries/blob/main/Date.md
 description: Extends the Std/Date functionality with additional helpers for parsing, formatting, and comparing dates and timestamps.
 ---
+name: Journal Calendar
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Journal Calendar.md
+---
 name: Path
 uri: https://github.com/lochel/silverbullet-libraries/blob/main/Path.md
 ---
-name: Trim Trailing Whitespaces
-uri: https://github.com/lochel/silverbullet-libraries/blob/main/Trim Trailing Whitespaces.md
-description: Trims trailing whitespaces on save
+name: Plotly
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Plotly.md
 ---
 name: Sub-tags
 uri: https://github.com/lochel/silverbullet-libraries/blob/main/Sub-tags.md
 ---
-name: Journal Calendar
-uri: https://github.com/lochel/silverbullet-libraries/blob/main/Journal Calendar.md
+name: Tasks
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Tasks.md
 ---
-name: Plotly
-uri: https://github.com/lochel/silverbullet-libraries/blob/main/Plotly.md
+name: Trim Trailing Whitespaces
+uri: https://github.com/lochel/silverbullet-libraries/blob/main/Trim Trailing Whitespaces.md
+description: Trims trailing whitespaces on save
 ```
