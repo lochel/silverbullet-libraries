@@ -155,40 +155,48 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
 
 /* entire attribute */
 .sb-attribute {
-  border: 1px solid rgba(0, 122, 255, 0.7) !important ;
+  border: 1px solid rgba(0, 122, 255, 0.7) !important;
   border-radius: 6px;
+  opacity: 0.7;
 }
 
 /* attribute decoration */
 .sb-attribute[data-ask]::before {
   content: "🚩";
   display: inline;
-  opacity: 0.7;
 }
 .sb-attribute[data-to]::before {
   content: "🤵";
   display: inline;
-  opacity: 0.7;
 }
 .sb-attribute[data-pr]::before {
   content: "⚡️";
   display: inline;
-  opacity: 0.7;
 }
 .sb-attribute[data-due]::before {
   content: "📅";
   display: inline;
-  opacity: 0.7;
 }
 .sb-attribute[data-deadline]::before {
   content: "⌛";
   display: inline;
-  opacity: 0.7;
 }
 .sb-attribute[data-done]::before {
   content: "✅";
   display: inline;
-  opacity: 0.7;
+}
+
+#sb-main .cm-editor .cm-task-checked {
+  text-decoration: none !important;
+  opacity: 0.3;
+}
+
+#sb-main .cm-editor .cm-task-checked .sb-task {
+  text-decoration: line-through;
+}
+
+#sb-main .cm-editor .cm-task-checked .sb-attribute {
+  border: 1px solid gray !important;
 }
 ```
 
@@ -220,9 +228,7 @@ command.define {
 
 ```space-style
 body.attr-alt-display .sb-attribute {
-  color: black;
   border: 1px solid orange !important ;
-  border-radius: 6px;  
 }
 body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-meta {
   display: inline !important;
@@ -235,18 +241,5 @@ body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-atom {
 body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
   display: inline !important;
   background: red;
-}
-
-#sb-main .cm-editor .cm-task-checked {
-  text-decoration: none !important;
-}
-
-#sb-main .cm-editor .cm-task-checked .sb-task {
-  text-decoration: line-through;
-}
-
-#sb-main .cm-editor .cm-task-checked .sb-attribute {
-  opacity: 0.4;
-  border: 1px solid gray !important;
 }
 ```
