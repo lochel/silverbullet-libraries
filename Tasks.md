@@ -62,7 +62,7 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
   [data-due],
   [data-deadline],
   [data-done]
-) > .sb-list.sb-frontmatter.sb-atom {
+) > .sb-list.sb-frontmatter.sb-attribute-name {
   display: none;
 }
 
@@ -125,51 +125,5 @@ event.listen {
     
     editor.replaceRange(e.data.from, e.data.to, text)
   end
-}
-```
-
-## For Debugging
-
-```lua
-command.define {
-  name = "toggle-attr-display",
-  key = "Ctrl-Alt-a",
-  run = function()
-    local body = js.window.document.body
-    if not body then
-      editor.flashNotification("Body inaccessible")
-      return
-    end
-
-    local classStr = body.className or ""
-    local hasAlt = classStr:find("attr%-alt%-display") ~= nil
-
-    if hasAlt then
-      body.className = classStr:gsub("%s*attr%-alt%-display", "")
-
-      editor.flashNotification("Attribute highlight: disabled")
-    else
-      body.className = classStr .. " attr-alt-display"
-      editor.flashNotification("Attribute highlight: enabled")
-    end
-  end
-}
-```
-
-```style
-body.attr-alt-display .sb-attribute {
-  border: 1px solid orange !important ;
-}
-body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-meta {
-  display: inline !important;
-  background: green; 
-}
-body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter.sb-atom {
-  display: inline !important;
-  background: yellow;
-}
-body.attr-alt-display .sb-attribute > .sb-list.sb-frontmatter {
-  display: inline !important;
-  background: red;
 }
 ```
