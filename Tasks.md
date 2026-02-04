@@ -15,7 +15,7 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
   [data-pr],
   [data-due],
   [data-deadline],
-  [data-done]
+  [data-completed]
 ) {
   /* padding inside the box */
   padding: 0px 6px; /* 6px left/right */
@@ -28,7 +28,7 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
   [data-pr],
   [data-due],
   [data-deadline],
-  [data-done]
+  [data-completed]
 )::before {
   background: none;
   color: var(--root-color);
@@ -42,7 +42,7 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
   [data-pr],
   [data-due],
   [data-deadline],
-  [data-done]
+  [data-completed]
 ) > .sb-list.sb-frontmatter {
   background: none;
 }
@@ -53,7 +53,7 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
   [data-pr],
   [data-due],
   [data-deadline],
-  [data-done]
+  [data-completed]
 ) > .sb-list.sb-frontmatter.sb-meta,
 .sb-attribute:is(
   [data-ask],
@@ -61,18 +61,18 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
   [data-pr],
   [data-due],
   [data-deadline],
-  [data-done]
+  [data-completed]
 ) > .sb-list.sb-frontmatter.sb-attribute-name {
   display: none;
 }
 
 /* emoji mapping */
-.sb-attribute[data-ask]::before      { content: "🚩"; }
-.sb-attribute[data-to]::before       { content: "🤵"; }
-.sb-attribute[data-pr]::before       { content: "⚡️"; }
-.sb-attribute[data-due]::before      { content: "📅"; }
-.sb-attribute[data-deadline]::before { content: "⌛"; }
-.sb-attribute[data-done]::before     { content: "✅"; }
+.sb-attribute[data-ask]::before       { content: "🚩"; }
+.sb-attribute[data-to]::before        { content: "🤵"; }
+.sb-attribute[data-pr]::before        { content: "⚡️"; }
+.sb-attribute[data-due]::before       { content: "📅"; }
+.sb-attribute[data-deadline]::before  { content: "⌛"; }
+.sb-attribute[data-completed]::before { content: "✅"; }
 ```
 
 ## Don’t strike attributes
@@ -88,7 +88,7 @@ source: https://community.silverbullet.md/t/decorate-attributes-with-emojis/3823
 }
 ```
 
-## Auto insert done-attribute
+## Auto insert completed-attribute
 ```space-lua
 -- priority: 1
 tasks = tasks or {}
@@ -109,7 +109,7 @@ event.listen {
     local text = e.data.text
 
     -- remove old attribute
-    local attr_start, attr_end = find_attr(text, "done")
+    local attr_start, attr_end = find_attr(text, "completed")
     if attr_start ~= nil then
       text = text:sub(1, attr_start - 1) .. text:sub(attr_end + 1)
       text = text:trimEnd()
@@ -120,7 +120,7 @@ event.listen {
     
     -- set new attribute
     if e.data.newState == "x" then
-      text = text .. "[done:" .. date.now() .. "]"
+      text = text .. "[completed:" .. date.now() .. "]"
     end
     
     editor.replaceRange(e.data.from, e.data.to, text)
